@@ -35,10 +35,8 @@ app.Run();
 
 void ConfigureServices(IServiceCollection services)
 {
-    services.AddTransient<IAuthService, AuthService>();
-    services.AddTransient<IAccountService, AccountService>();
-    services.AddTransient<IEntryService, EntryService>();
-    services.AddTransient<IUserRepository, UserRepository>();
-    services.AddTransient<IAccountRepository, AccountRepository>();
-    services.AddTransient<IEntryRepository, EntryRepository>();
+    services.AddScoped<IAuthService, AuthService>();
+    services.AddScoped<IAccountService, AccountService>();
+    services.AddScoped<IEntryService, EntryService>();
+    services.AddScoped<IUnitOfWork, UnitOfWork>();
 }
