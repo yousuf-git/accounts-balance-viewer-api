@@ -6,9 +6,6 @@ namespace AccountsViewer.API.Models.Entities;
 [Index(nameof(Email))]
 public class User
 {
-    public static string ROLE_ADMIN = "admin";
-    public static string ROLE_USER = "user";
-    
     public long Id { get; set; }
     public string Username { get; set; } = "";
     public string Name { get; set; } = "";

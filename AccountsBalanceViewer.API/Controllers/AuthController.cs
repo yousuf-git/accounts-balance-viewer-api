@@ -1,3 +1,4 @@
+using AccountsViewer.API.Models.DTOs;
 using AccountsViewer.API.Models.Entities;
 using AccountsViewer.API.Models.Requests;
 using AccountsViewer.API.Models.Responses;
@@ -19,7 +20,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Auth(AuthRequest request)
+    public ActionResult<AuthResponse> Auth(AuthRequest request)
     {
         var (user, token) = _authService.Auth(request.Username!, request.Password!);
 
@@ -40,6 +41,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("sign-up")]
+    [Authorize(Roles = UserRoles.Admin)]
     public async Task<ActionResult<SignUpResponse>> SignUp(SignUpRequest request)
     {
         var user = new User
@@ -61,7 +63,7 @@ public class AuthController : ControllerBase
 
     [HttpGet("profile")]
     [Authorize]
-    public IActionResult GetUser()
+    public ActionResult<UserDTO> GetUser()
     {
         var user = _authService.GetAuthUser();
         if (user == null)

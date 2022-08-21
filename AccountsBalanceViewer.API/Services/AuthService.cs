@@ -47,7 +47,7 @@ public class AuthService : IAuthService
     public async Task UserSignUp(User user)
     {
         user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
-        user.Role = User.ROLE_USER;
+        user.Role = UserRoles.User;
         await _uow.UserRepository.Add(user);
         await _uow.Commit();
     }
@@ -55,7 +55,7 @@ public class AuthService : IAuthService
     public UserDTO? GetAuthUser()
     {
         var identity = _ctx.HttpContext?.User.Identity as ClaimsIdentity;
-        if (identity == null) return null;
+        if (identity is null || !identity.IsAuthenticated) return null;
 
         var user = new UserDTO();
         identity.Claims.ToList().ForEach(claim =>
