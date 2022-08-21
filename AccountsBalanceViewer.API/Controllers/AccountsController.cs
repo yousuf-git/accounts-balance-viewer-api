@@ -1,4 +1,9 @@
+using AccountsViewer.API.Models.DTOs;
+using AccountsViewer.API.Models.Entities;
+using AccountsViewer.API.Models.Requests;
+using AccountsViewer.API.Models.Responses;
 using AccountsViewer.API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccountsViewer.API.Controllers;
@@ -13,6 +18,55 @@ public class AccountsController : ControllerBase
     {
         _accountService = accountService;
     }
+
+    [HttpGet]
+    [Authorize]
+    public Task<List<AccountDTO>> GetAccounts(
+        [FromQuery] DateTime? balanceFrom, [FromQuery] DateTime? balanceTo)
+    {
+        DateOnly from = DateOnly.FromDateTime(balanceFrom ?? DateTime.MinValue);
+        DateOnly to = DateOnly.FromDateTime(balanceTo ?? DateTime.Now);
+
+        return _accountService.GetAccountsWithBalancesWithinRange(from, to);
+    }
+
+    [HttpPost]
+    [Authorize(Roles = UserRoles.Admin)]
+    public async Task<ActionResult<AddAccountResponse>> AddAccount(AddAccountRequest request)
+    {
+        var account = new Account { Name = request.Name! };
+        await _accountService.AddAccount(account);
+
+        return Ok(new AddAccountResponse
+        {
+            Id = account.Id,
+            Name = account.Name
+        });
+    }
+
+    [HttpPut("{id:long}")]
+    [Authorize(Roles = UserRoles.Admin)]
+    public async Task<ActionResult<AddAccountResponse>> UpdateAccount(
+        [FromRoute] long id, [FromBody] UpdateAccountRequest request)
+    {
+        var account = new Account { Name = request.Name! };
+        await _accountService.UpdateAccount(id, account);
+
+        return Ok(new UpdateAccountResponse
+        {
+            Id = account.Id,
+            Name = account.Name
+        });
+    }
+
+    [HttpDelete("{id:long}")]
+    [Authorize(Roles = UserRoles.Admin)]
+    public async Task<IActionResult> DeleteAccount([FromRoute] long id)
+    {
+        await _accountService.DeleteAccount(id);
+        return Ok();
+    }
+
 
     [HttpGet("ping")]
     public IActionResult Ping()
