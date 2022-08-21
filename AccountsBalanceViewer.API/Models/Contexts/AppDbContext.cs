@@ -41,10 +41,24 @@ public class AppDbContext : DbContext
             entity.AddProperty("UpdatedAt", typeof(DateTime));
         }
     }
+    
+    public override Task<int> SaveChangesAsync(
+        bool acceptAllChangesOnSuccess,
+        CancellationToken cancellationToken = new())
+    {
+        _SetTimestamps();
+        return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+    }
 
     public override int SaveChanges()
     {
-        // configure CreatedAt and UpdatedAt behaviors
+        _SetTimestamps();
+        return base.SaveChanges();
+    }
+    
+    private void _SetTimestamps()
+    {
+        // set CreatedAt and UpdatedAt behaviors
         var entityEntries = ChangeTracker
             .Entries()
             .Where(e =>
@@ -52,14 +66,12 @@ public class AppDbContext : DbContext
 
         foreach (var entityEntry in entityEntries)
         {
-            entityEntry.Property("UpdatedAt").CurrentValue = DateTime.Now;
+            entityEntry.Property("UpdatedAt").CurrentValue = DateTime.Now.ToUniversalTime();
 
             if (entityEntry.State == EntityState.Added)
             {
-                entityEntry.Property("CreatedAt").CurrentValue = DateTime.Now;
+                entityEntry.Property("CreatedAt").CurrentValue = DateTime.Now.ToUniversalTime();
             }
         }
-
-        return base.SaveChanges();
     }
 }
