@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using AccountsViewer.API.Models.Contexts;
 using AccountsViewer.API.Models.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace AccountsViewer.API.Repositories;
 
@@ -27,9 +28,9 @@ public class UserRepository : IUserRepository
         return await _context.Users.FindAsync(id);
     }
 
-    public Task<IEnumerable<User>> FindAll()
+    public async Task<IEnumerable<User>> FindAll()
     {
-        throw new NotImplementedException();
+        return await _context.Users.ToListAsync();
     }
 
     public IEnumerable<User> Search(Expression<Func<User, bool>> predicate)

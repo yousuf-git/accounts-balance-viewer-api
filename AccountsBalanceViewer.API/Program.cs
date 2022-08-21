@@ -1,13 +1,20 @@
+using System.Text;
+using AccountsViewer.API.Config;
 using AccountsViewer.API.Models.Contexts;
 using AccountsViewer.API.Repositories;
 using AccountsViewer.API.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Custom configurations.
 ConfigureServices(builder.Services);
+ConfigureConfigs(builder.Services);
+ConfigureJwtAuth(builder.Services);
 
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseNpgsql(builder.Configuration.GetConnectionString("AccountsDB")));
@@ -27,6 +34,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();
@@ -39,4 +48,30 @@ void ConfigureServices(IServiceCollection services)
     services.AddScoped<IAccountService, AccountService>();
     services.AddScoped<IEntryService, EntryService>();
     services.AddScoped<IUnitOfWork, UnitOfWork>();
+}
+
+void ConfigureConfigs(IServiceCollection services)
+{
+    services.Configure<JwtConfig>(builder.Configuration.GetSection(JwtConfig.Property));
+}
+
+void ConfigureJwtAuth(IServiceCollection services)
+{
+    services
+        .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(o =>
+        {
+            var jwtConfigs = builder.Configuration.GetSection(JwtConfig.Property).Get<JwtConfig>();
+
+            o.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = jwtConfigs.Issuer,
+                ValidAudience = jwtConfigs.Audience,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfigs.Key)),
+            };
+        });
 }
