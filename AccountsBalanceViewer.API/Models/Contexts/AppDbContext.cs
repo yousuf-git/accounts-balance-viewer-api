@@ -15,6 +15,19 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // set unique indexes
+        modelBuilder.Entity<Account>()
+            .HasIndex(a => a.Name)
+            .IsUnique();
+
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.Username)
+            .IsUnique();
+
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.Email)
+            .IsUnique();
+        
         // setup CreatedBy relationship from Entry -> User
         modelBuilder.Entity<Entry>()
             .HasOne(e => e.User)
