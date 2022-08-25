@@ -22,7 +22,7 @@ public class AuthController : ControllerBase
     [HttpPost]
     public ActionResult<AuthResponse> Auth(AuthRequest request)
     {
-        var (user, token) = _authService.Auth(request.Username!, request.Password!);
+        var (user, token, expiresAt) = _authService.Auth(request.Username!, request.Password!);
 
         if (user is null)
         {
@@ -36,7 +36,8 @@ public class AuthController : ControllerBase
             Name = user.Name,
             Email = user.Email,
             Role = user.Role,
-            Token = token
+            Token = token,
+            Expires = new DateTimeOffset(expiresAt).ToUnixTimeMilliseconds()
         });
     }
 

@@ -12,7 +12,7 @@ namespace AccountsViewer.API.Services;
 
 public interface IAuthService
 {
-    (UserDTO?, string) Auth(string username, string password);
+    (UserDTO?, string, DateTime) Auth(string username, string password);
     Task UserSignUp(User user);
     UserDTO? GetAuthUser();
 }
@@ -30,7 +30,7 @@ public class AuthService : IAuthService
         _jwtConfig = jwtConfigs.Value;
     }
 
-    public (UserDTO?, string) Auth(string username, string password)
+    public (UserDTO?, string, DateTime) Auth(string username, string password)
     {
         var user = _uow.UserRepository
             .Search(user => user.Username == username)
@@ -38,10 +38,11 @@ public class AuthService : IAuthService
 
         if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.Password))
         {
-            return (null, "");
+            return (null, "", DateTime.MinValue);
         }
 
-        return (new UserDTO(user), _GenerateToken(user));
+        var expiresAt = DateTime.Now.AddMinutes(_jwtConfig.ExpireIn);
+        return (new UserDTO(user), _GenerateToken(user, expiresAt), expiresAt);
     }
 
     public async Task UserSignUp(User user)
@@ -83,7 +84,7 @@ public class AuthService : IAuthService
         return user;
     }
     
-    private string _GenerateToken(User user)
+    private string _GenerateToken(User user, DateTime expiresAt)
     {
         var key = Encoding.UTF8.GetBytes(_jwtConfig.Key);
         var securityKey = new SymmetricSecurityKey(key);
@@ -102,7 +103,7 @@ public class AuthService : IAuthService
             issuer: _jwtConfig.Issuer,
             audience: _jwtConfig.Audience,
             claims: claims,
-            expires: DateTime.Now.AddMinutes(_jwtConfig.ExpireIn),
+            expires: expiresAt,
             signingCredentials: credentials
         );
 
