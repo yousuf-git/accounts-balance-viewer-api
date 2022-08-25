@@ -1,25 +1,9 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=2732dabf_002Df4d7_002D4105_002D8e69_002D462284a0a886/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;Or&gt;
-    &lt;And&gt;
-      &lt;TestAncestor&gt;
-        &lt;TestId&gt;xUnit::E0FF2483-25F2-4DCE-8366-52C1CEF17EF6::net6.0::AccountsBalanceViewer.UnitTests.Systems.Controllers.TestAccountsController&lt;/TestId&gt;
-      &lt;/TestAncestor&gt;
-      &lt;Project Location="/home/yousuf/RiderProjects/AccountsBalanceViewer/AccountsBalanceViewer.UnitTests" Presentation="&amp;lt;AccountsBalanceViewer.UnitTests&amp;gt;" /&gt;
-      &lt;Namespace&gt;AccountsBalanceViewer.UnitTests.Systems.Controllers&lt;/Namespace&gt;
-    &lt;/And&gt;
-    &lt;TestAncestor&gt;
-      &lt;TestId&gt;xUnit::E0FF2483-25F2-4DCE-8366-52C1CEF17EF6::net6.0::AccountsBalanceViewer.UnitTests.Systems.Services.TestAccountService.GetAccounts&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::E0FF2483-25F2-4DCE-8366-52C1CEF17EF6::net6.0::AccountsBalanceViewer.UnitTests.Systems.Services.TestAccountService.TestGetAccounts_OnSuccess_MutatesAccountId&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::E0FF2483-25F2-4DCE-8366-52C1CEF17EF6::net6.0::AccountsBalanceViewer.UnitTests.Systems.Services.TestAccountService.GetAccountsWithBalancesWithinRange_OnSuccess_ReturnsAccountsList&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::E0FF2483-25F2-4DCE-8366-52C1CEF17EF6::net6.0::AccountsBalanceViewer.UnitTests.Systems.Services.TestAccountService.AddAccount_WhenCalled_InvokesAddFuncOfAccountRepo&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::E0FF2483-25F2-4DCE-8366-52C1CEF17EF6::net6.0::AccountsBalanceViewer.UnitTests.Systems.Services.TestAccountService.UpdateAccount_OnSuccess_InvokesAccountFind&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::E0FF2483-25F2-4DCE-8366-52C1CEF17EF6::net6.0::AccountsBalanceViewer.UnitTests.Systems.Services.TestAccountService.DeleteAccount_WhenCalled_InvokesDeleteRepoFunc&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::E0FF2483-25F2-4DCE-8366-52C1CEF17EF6::net6.0::AccountsBalanceViewer.UnitTests.Systems.Services.TestAccountService.DeleteAccount_WhenCalled_DeletesExpectedAccount&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::E0FF2483-25F2-4DCE-8366-52C1CEF17EF6::net6.0::AccountsBalanceViewer.UnitTests.Systems.Services.TestAccountService.UpdateAccount_WhenCalled_InvokesAccountFind&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::E0FF2483-25F2-4DCE-8366-52C1CEF17EF6::net6.0::AccountsBalanceViewer.UnitTests.Systems.Services.TestAccountService.GetAccountsWithBalancesWithinRange_OnSuccess_ReturnsAccountsListOfExpectedSize&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::E0FF2483-25F2-4DCE-8366-52C1CEF17EF6::net6.0::AccountsBalanceViewer.UnitTests.Systems.Services.TestAccountService.AddAccount_OnSuccess_MutatesAccountId&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::E0FF2483-25F2-4DCE-8366-52C1CEF17EF6::net6.0::AccountsBalanceViewer.UnitTests.Systems.Services.TestAccountService&lt;/TestId&gt;
-    &lt;/TestAncestor&gt;
-  &lt;/Or&gt;
-&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
+	
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b7b8ba3b_002D274f_002D4eda_002Db683_002Df172d9edb8c0/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="AddEntries_OnSuccess_Returns204Response #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::E0FF2483-25F2-4DCE-8366-52C1CEF17EF6::net6.0::AccountsBalanceViewer.UnitTests.Systems.Controllers.TestEntriesController.AddEntries_OnSuccess_Returns204Response&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	
+	</wpf:ResourceDictionary>

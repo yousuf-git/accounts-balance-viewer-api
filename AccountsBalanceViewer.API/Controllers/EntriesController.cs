@@ -22,6 +22,11 @@ public class EntriesController : ControllerBase
     [Authorize(Roles = UserRoles.Admin)]
     public async Task<ActionResult<AddAccountResponse>> AddEntries(List<AddEntryRequest> request)
     {
+        if (request.Count == 0)
+        {
+            return BadRequest();
+        }
+        
         var entries = request.Select(e =>
             new Entry
             {
