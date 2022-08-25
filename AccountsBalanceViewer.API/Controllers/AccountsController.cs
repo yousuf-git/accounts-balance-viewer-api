@@ -21,13 +21,15 @@ public class AccountsController : ControllerBase
 
     [HttpGet]
     [Authorize]
-    public Task<List<AccountDTO>> GetAccounts(
+    public async Task<ActionResult<List<AccountDTO>>> GetAccounts(
         [FromQuery] DateTime? balanceFrom, [FromQuery] DateTime? balanceTo)
     {
         DateOnly from = DateOnly.FromDateTime(balanceFrom ?? DateTime.MinValue);
         DateOnly to = DateOnly.FromDateTime(balanceTo ?? DateTime.Now);
 
-        return _accountService.GetAccountsWithBalancesWithinRange(from, to);
+        var accounts = await _accountService.GetAccountsWithBalancesWithinRange(from, to);
+
+        return Ok(accounts);
     }
 
     [HttpPost]
