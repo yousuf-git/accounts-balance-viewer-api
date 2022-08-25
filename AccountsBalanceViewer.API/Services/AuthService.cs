@@ -22,12 +22,18 @@ public class AuthService : IAuthService
     private readonly IUnitOfWork _uow;
     private readonly JwtConfig _jwtConfig;
     private readonly IHttpContextAccessor _ctx;
+    private readonly ICryptoService _cryptoService;
 
-    public AuthService(IUnitOfWork uow, IHttpContextAccessor ctx, IOptions<JwtConfig> jwtConfigs)
+    public AuthService(
+        IUnitOfWork uow,
+        IHttpContextAccessor ctx,
+        IOptions<JwtConfig> jwtConfigs,
+        ICryptoService cryptoService)
     {
         _uow = uow;
         _ctx = ctx;
         _jwtConfig = jwtConfigs.Value;
+        _cryptoService = cryptoService;
     }
 
     public (UserDTO?, string, DateTime) Auth(string username, string password)
@@ -36,7 +42,7 @@ public class AuthService : IAuthService
             .Search(user => user.Username == username)
             .FirstOrDefault();
 
-        if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.Password))
+        if (user == null || !_cryptoService.Verify(password, user.Password))
         {
             return (null, "", DateTime.MinValue);
         }
@@ -47,12 +53,12 @@ public class AuthService : IAuthService
 
     public async Task UserSignUp(User user)
     {
-        user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+        user.Password = _cryptoService.Hash(user.Password);
         user.Role = UserRoles.User;
         await _uow.UserRepository.Add(user);
         await _uow.Commit();
     }
-    
+
     public UserDTO? GetAuthUser()
     {
         var identity = _ctx.HttpContext?.User.Identity as ClaimsIdentity;
@@ -83,7 +89,7 @@ public class AuthService : IAuthService
 
         return user;
     }
-    
+
     private string _GenerateToken(User user, DateTime expiresAt)
     {
         var key = Encoding.UTF8.GetBytes(_jwtConfig.Key);
@@ -110,5 +116,5 @@ public class AuthService : IAuthService
         var tokenHandler = new JwtSecurityTokenHandler();
         var stringToken = tokenHandler.WriteToken(token);
         return stringToken;
-    } 
+    }
 }

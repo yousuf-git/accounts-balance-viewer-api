@@ -54,6 +54,7 @@ void ConfigureServices(IServiceCollection services)
     services.AddScoped<IAuthService, AuthService>();
     services.AddScoped<IAccountService, AccountService>();
     services.AddScoped<IEntryService, EntryService>();
+    services.AddScoped<ICryptoService, CryptoService>();
     services.AddScoped<IUnitOfWork, UnitOfWork>();
 }
 
