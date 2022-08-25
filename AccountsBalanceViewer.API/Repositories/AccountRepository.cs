@@ -20,22 +20,23 @@ public class AccountRepository : IAccountRepository
         _context = context;
     }
 
-    public async Task Add(Account account)
+    public virtual async Task Add(Account account)
     {
         await _context.Accounts.AddAsync(account);
     }
 
-    public async Task<Account?> Find(long id)
+    public virtual async Task<Account?> Find(long id)
     {
         return await _context.Accounts.FindAsync(id);
     }
 
-    public async Task<IEnumerable<Account>> FindAll()
+    public virtual async Task<IEnumerable<Account>> FindAll()
     {
         return await _context.Accounts.ToListAsync();
     }
 
-    public Task<IEnumerable<AccountDTO>> FindAllWithBalancesWithinRange(DateOnly balanceFrom, DateOnly balanceTo)
+    public virtual Task<IEnumerable<AccountDTO>> FindAllWithBalancesWithinRange(DateOnly balanceFrom,
+        DateOnly balanceTo)
     {
         return Task.FromResult<IEnumerable<AccountDTO>>(_context.Accounts
             .Select(account => new AccountDTO
@@ -50,12 +51,12 @@ public class AccountRepository : IAccountRepository
             }));
     }
 
-    public IEnumerable<Account> Search(Expression<Func<Account, bool>> predicate)
+    public virtual IEnumerable<Account> Search(Expression<Func<Account, bool>> predicate)
     {
         return _context.Accounts.Where(predicate);
     }
 
-    public void Delete(Account account)
+    public virtual void Delete(Account account)
     {
         _context.Accounts.Remove(account);
         ;
