@@ -1,9 +1,19 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=53301f5d_002D7261_002D4a76_002D9feb_002D4ef5b19391d7/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Auth_OnSuccess_Returns200StatusCode" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::E0FF2483-25F2-4DCE-8366-52C1CEF17EF6::net6.0::AccountsBalanceViewer.UnitTests.Systems.Controllers.TestAuthController.Auth_OnSuccess_Returns200StatusCode&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::E0FF2483-25F2-4DCE-8366-52C1CEF17EF6::net6.0::AccountsBalanceViewer.UnitTests.Systems.Controllers.TestAuthController.Auth_OnUserNotFound_Returns404StatusCode&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b7b8ba3b_002D274f_002D4eda_002Db683_002Df172d9edb8c0/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="AddEntries_OnSuccess_Returns204Response #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;xUnit::E0FF2483-25F2-4DCE-8366-52C1CEF17EF6::net6.0::AccountsBalanceViewer.UnitTests.Systems.Controllers.TestEntriesController.AddEntries_OnSuccess_Returns204Response&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=dba66406_002D9047_002D462c_002Db860_002D72f21cdb2d41/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="GetUser_OnUserNotFound_Returns401StatusCode" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;Solution /&gt;
 &lt;/SessionState&gt;</s:String>
 	
 	</wpf:ResourceDictionary>

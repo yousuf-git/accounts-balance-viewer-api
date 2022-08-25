@@ -32,7 +32,7 @@ public class TestAccountService
     }
 
     [Fact]
-    public async Task AddAccount_WhenCalled_InvokesAddFromAccountRepo()
+    public async Task AddAccount_WhenCalled_InvokesAccountRepository()
     {
         var account = new Account { Name = "R&D" };
 
