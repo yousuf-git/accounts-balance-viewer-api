@@ -20,6 +20,15 @@ jobs:
         with:
           dotnet-version: ${{ env.NETCORE_VERSION }}
           
+      - name: Replace Configs
+        run: |
+          dotnet user-secrets init --project AccountsBalanceViewer.API
+          dotnet user-secrets set "ConnectionStrings:AccountsDB" "${{ secrets.CONNECTION_STRINGS_ACCOUNTS_DB }}" --project AccountsBalanceViewer.API
+          dotnet user-secrets set "Jwt:Key" "${{ secrets.JWT_KEY }}" --project AccountsBalanceViewer.API
+          dotnet user-secrets set "Jwt:Issuer" "${{ secrets.JWT_ISSUER }}" --project AccountsBalanceViewer.API
+          dotnet user-secrets set "Jwt:Audience" "${{ secrets.JWT_AUDIENCE }}" --project AccountsBalanceViewer.API
+          dotnet user-secrets set "Jwt:ExpireIn" ${{ secrets.JWT_EXPIRE_IN }} --project AccountsBalanceViewer.API
+        
       - name: Restore
         run: dotnet restore
         
