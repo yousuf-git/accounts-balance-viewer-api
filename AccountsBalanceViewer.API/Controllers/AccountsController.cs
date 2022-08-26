@@ -13,10 +13,15 @@ namespace AccountsViewer.API.Controllers;
 public class AccountsController : ControllerBase
 {
     private readonly IAccountService _accountService;
+    private readonly IConfiguration? _configuration;
 
-    public AccountsController(IAccountService accountService)
+    public AccountsController(IAccountService accountService, IConfiguration? configuration)
     {
         _accountService = accountService;
+        if (configuration != null)
+        {
+            _configuration = configuration;
+        }
     }
 
     [HttpGet]
@@ -75,7 +80,9 @@ public class AccountsController : ControllerBase
     {
         return Ok(new
         {
-            Status = "Running..."
+            Jwt = _configuration!.GetSection("Jwt").Get<List<String>>(),
+            ConStr = _configuration!.GetSection("ConnectionStrings").Get<List<String>>(),
+            App = _configuration!.GetConnectionString("AccountsDB")
         });
     }
 }
