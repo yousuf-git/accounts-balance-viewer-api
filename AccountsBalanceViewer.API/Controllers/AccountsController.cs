@@ -13,12 +13,10 @@ namespace AccountsViewer.API.Controllers;
 public class AccountsController : ControllerBase
 {
     private readonly IAccountService _accountService;
-    private readonly IConfiguration _configuration;
 
-    public AccountsController(IAccountService accountService, IConfiguration configuration)
+    public AccountsController(IAccountService accountService)
     {
         _accountService = accountService;
-        _configuration = configuration;
     }
 
     [HttpGet]
@@ -69,17 +67,5 @@ public class AccountsController : ControllerBase
     {
         await _accountService.DeleteAccount(id);
         return Ok();
-    }
-
-
-    [HttpGet("ping")]
-    public IActionResult Ping()
-    {
-        return Ok(new
-        {
-            Jwt = _configuration.GetSection("Jwt").Get<List<String>>(),
-            ConStr = _configuration.GetSection("ConnectionStrings").Get<List<String>>(),
-            App = _configuration.GetConnectionString("AccountsDB")
-        });
     }
 }

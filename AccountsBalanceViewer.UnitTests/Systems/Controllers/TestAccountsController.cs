@@ -20,10 +20,8 @@ public class TestAccountsController
             .Setup(service =>
                 service.GetAccountsWithBalancesWithinRange(It.IsAny<DateOnly>(), It.IsAny<DateOnly>()))
             .ReturnsAsync(AccountsFixture.GetTestAccountDTOs());
-
-        var mockConfig = new ConfigurationBuilder().Build();
         
-        var sut = new AccountsController(mockAccountService.Object, mockConfig);
+        var sut = new AccountsController(mockAccountService.Object);
 
         var result = (await sut.GetAccounts(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Result as OkObjectResult;
 
@@ -38,10 +36,8 @@ public class TestAccountsController
             .Setup(service =>
                 service.GetAccountsWithBalancesWithinRange(It.IsAny<DateOnly>(), It.IsAny<DateOnly>()))
             .ReturnsAsync(AccountsFixture.GetTestAccountDTOs());
-
-        var mockConfig = new ConfigurationBuilder().Build();
-
-        var sut = new AccountsController(mockAccountService.Object, mockConfig);
+        
+        var sut = new AccountsController(mockAccountService.Object);
 
         var result = (await sut.GetAccounts(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Result;
         result.Should().BeOfType<OkObjectResult>();
@@ -58,10 +54,8 @@ public class TestAccountsController
             .Setup(service =>
                 service.GetAccountsWithBalancesWithinRange(It.IsAny<DateOnly>(), It.IsAny<DateOnly>()))
             .ReturnsAsync(AccountsFixture.GetTestAccountDTOs());
-
-        var mockConfig = new ConfigurationBuilder().Build();
-
-        var sut = new AccountsController(mockAccountService.Object, mockConfig);
+        
+        var sut = new AccountsController(mockAccountService.Object);
 
         var result = await sut.GetAccounts(It.IsAny<DateTime>(), It.IsAny<DateTime>());
 
@@ -78,10 +72,8 @@ public class TestAccountsController
             .Setup(service =>
                 service.GetAccountsWithBalancesWithinRange(It.IsAny<DateOnly>(), It.IsAny<DateOnly>()))
             .ReturnsAsync(AccountsFixture.GetTestAccountDTOs());
-
-        var mockConfig = new ConfigurationBuilder().Build();
-
-        var sut = new AccountsController(mockAccountService.Object, mockConfig);
+        
+        var sut = new AccountsController(mockAccountService.Object);
 
         var balanceFrom = DateTime.Now;
         var balanceTo = DateTime.Now;
