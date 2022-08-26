@@ -27,7 +27,7 @@ jobs:
         run: dotnet build --no-restore -c Release
         
       - name: Test
-        run: dotnet test --no-build
+        run: dotnet test --no-build -c Release
       
       - name: Publish app for deploy
         run: dotnet publish ${{ env.PROJECT_NAME }} --no-build -c Release -o ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
