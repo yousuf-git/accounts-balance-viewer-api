@@ -1,7 +1,6 @@
 using System.Linq.Expressions;
-using AccountsViewer.API.Models.Entities;
 
-namespace AccountsViewer.API.Repositories;
+namespace AccountsViewer.API.Repositories.Interfaces;
 
 public interface IRepository<T>
 {

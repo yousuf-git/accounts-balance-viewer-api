@@ -2,20 +2,15 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using AccountsViewer.API.Config;
+using AccountsViewer.API.Models.Constants;
 using AccountsViewer.API.Models.DTOs;
 using AccountsViewer.API.Models.Entities;
-using AccountsViewer.API.Repositories;
+using AccountsViewer.API.Repositories.Interfaces;
+using AccountsViewer.API.Services.Interfaces;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AccountsViewer.API.Services;
-
-public interface IAuthService
-{
-    (UserDTO?, string, DateTime) Auth(string username, string password);
-    Task UserSignUp(User user);
-    UserDTO? GetAuthUser();
-}
 
 public class AuthService : IAuthService
 {
@@ -36,7 +31,7 @@ public class AuthService : IAuthService
         _cryptoService = cryptoService;
     }
 
-    public (UserDTO?, string, DateTime) Auth(string username, string password)
+    public (UserDTO? userDto, string token, DateTime expiresAt) Auth(string username, string password)
     {
         var user = _uow.UserRepository
             .Search(user => user.Username == username)

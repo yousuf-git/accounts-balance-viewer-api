@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using AccountsViewer.API.Models.Contexts;
 using AccountsViewer.API.Models.Entities;
+using AccountsViewer.API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace AccountsViewer.API.Repositories;

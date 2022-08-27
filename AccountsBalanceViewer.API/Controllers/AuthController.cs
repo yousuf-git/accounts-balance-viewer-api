@@ -1,8 +1,9 @@
+using AccountsViewer.API.Models.Constants;
 using AccountsViewer.API.Models.DTOs;
 using AccountsViewer.API.Models.Entities;
 using AccountsViewer.API.Models.Requests;
 using AccountsViewer.API.Models.Responses;
-using AccountsViewer.API.Services;
+using AccountsViewer.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -52,10 +53,11 @@ public class AuthController : ControllerBase
             Username = request.Username!,
             Password = request.Password!
         };
-        
+
         await _authService.UserSignUp(user);
 
-        return Ok(new SignUpResponse {
+        return Ok(new SignUpResponse
+        {
             Name = user.Name,
             Email = user.Email,
             Username = user.Username

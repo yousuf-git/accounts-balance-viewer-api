@@ -1,12 +1,8 @@
 using AccountsViewer.API.Models.Entities;
-using AccountsViewer.API.Repositories;
+using AccountsViewer.API.Repositories.Interfaces;
+using AccountsViewer.API.Services.Interfaces;
 
 namespace AccountsViewer.API.Services;
-
-public interface IEntryService
-{
-    Task AddEntries(IEnumerable<Entry> entries);
-}
 
 public class EntryService : IEntryService
 {
@@ -26,7 +22,7 @@ public class EntryService : IEntryService
         {
             throw new Exception("Unauthorized");
         }
-        
+
         var entriesArr = entries as Entry[] ?? entries.ToArray();
         entriesArr.ToList().ForEach(e => e.CreatedBy = currentUser.Id);
 

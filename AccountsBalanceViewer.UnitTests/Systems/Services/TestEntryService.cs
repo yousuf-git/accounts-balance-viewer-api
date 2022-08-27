@@ -1,8 +1,9 @@
 using AccountsBalanceViewer.UnitTests.Fixtures;
-using AccountsViewer.API.Models.DTOs;
 using AccountsViewer.API.Models.Entities;
 using AccountsViewer.API.Repositories;
+using AccountsViewer.API.Repositories.Interfaces;
 using AccountsViewer.API.Services;
+using AccountsViewer.API.Services.Interfaces;
 using FluentAssertions;
 using Moq;
 

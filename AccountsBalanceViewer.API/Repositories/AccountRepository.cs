@@ -2,14 +2,10 @@ using System.Linq.Expressions;
 using AccountsViewer.API.Models.Contexts;
 using AccountsViewer.API.Models.DTOs;
 using AccountsViewer.API.Models.Entities;
+using AccountsViewer.API.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace AccountsViewer.API.Repositories;
-
-public interface IAccountRepository : IRepository<Account>
-{
-    Task<IEnumerable<AccountDTO>> FindAllWithBalancesWithinRange(DateOnly balanceFrom, DateOnly balanceTo);
-}
 
 public class AccountRepository : IAccountRepository
 {

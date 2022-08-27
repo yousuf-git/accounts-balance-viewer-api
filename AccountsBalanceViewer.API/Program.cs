@@ -1,8 +1,12 @@
 using System.Text;
 using AccountsViewer.API.Config;
 using AccountsViewer.API.Models.Contexts;
+using AccountsViewer.API.Reporting;
+using AccountsViewer.API.Reporting.Interfaces;
 using AccountsViewer.API.Repositories;
+using AccountsViewer.API.Repositories.Interfaces;
 using AccountsViewer.API.Services;
+using AccountsViewer.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -53,9 +57,9 @@ void ConfigureServices(IServiceCollection services)
     services.AddScoped<IAuthService, AuthService>();
     services.AddScoped<IAccountService, AccountService>();
     services.AddScoped<IEntryService, EntryService>();
-    services.AddScoped<IStatsService, StatsService>();
     services.AddScoped<ICryptoService, CryptoService>();
     services.AddScoped<IUnitOfWork, UnitOfWork>();
+    services.AddScoped<IStatsReporter, StatsReporter>();
 }
 
 void ConfigureConfigs(IServiceCollection services)

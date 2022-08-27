@@ -1,4 +1,4 @@
-namespace AccountsViewer.API.Models.Entities;
+namespace AccountsViewer.API.Models.Constants;
 
 public static class UserRoles
 {

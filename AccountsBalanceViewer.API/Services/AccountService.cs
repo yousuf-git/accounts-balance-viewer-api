@@ -1,16 +1,9 @@
 using AccountsViewer.API.Models.DTOs;
 using AccountsViewer.API.Models.Entities;
-using AccountsViewer.API.Repositories;
+using AccountsViewer.API.Repositories.Interfaces;
+using AccountsViewer.API.Services.Interfaces;
 
 namespace AccountsViewer.API.Services;
-
-public interface IAccountService
-{
-    Task AddAccount(Account account);
-    Task UpdateAccount(long id, Account account);
-    Task DeleteAccount(long id);
-    Task<List<AccountDTO>> GetAccountsWithBalancesWithinRange(DateOnly balanceFrom, DateOnly balanceTo);
-}
 
 public class AccountService : IAccountService
 {

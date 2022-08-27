@@ -1,10 +1,6 @@
-namespace AccountsViewer.API.Services;
+using AccountsViewer.API.Services.Interfaces;
 
-public interface ICryptoService
-{
-    string Hash(string password);
-    bool Verify(string text, string hash);
-}
+namespace AccountsViewer.API.Services;
 
 public class CryptoService : ICryptoService
 {
