@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using AccountsViewer.API.Services;
+using AccountsViewer.API.Models.Constants;
+using AccountsViewer.API.Reporting.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccountsViewer.API.Controllers;
@@ -8,46 +10,52 @@ namespace AccountsViewer.API.Controllers;
 [Route("[controller]")]
 public class StatsController : ControllerBase
 {
-    private readonly IStatsService _statsService;
+    private readonly IStatsReporter _statsReporter;
 
-    public StatsController(IStatsService statsService)
+    public StatsController(IStatsReporter statsReporter)
     {
-        _statsService = statsService;
+        _statsReporter = statsReporter;
     }
 
     [HttpGet("balance-change-by-months")]
+    [Authorize(Roles = UserRoles.Admin)]
     public async Task<IActionResult> FindBalanceChangeByMonths([Required] int year)
     {
-        var data = await _statsService.FindBalanceChangeByMonths(year);
+        var data = await _statsReporter.FindBalanceChangeByMonths(year);
         return Ok(data);
     }
 
     [HttpGet("balance-change-by-years")]
+    [Authorize(Roles = UserRoles.Admin)]
     public async Task<IActionResult> FindBalanceChangeByYears()
     {
-        var data = await _statsService.FindBalanceChangeByYears();
+        var data = await _statsReporter.FindBalanceChangeByYears();
         return Ok(data);
     }
 
     [HttpGet("balance-by-months")]
+    [Authorize(Roles = UserRoles.Admin)]
     public async Task<IActionResult> FindBalanceByMonths([Required] int year)
     {
-        var data = await _statsService.FindBalanceByMonths(year);
+        var data = await _statsReporter.FindBalanceByMonths(year);
         return Ok(data);
     }
 
     [HttpGet("balance-by-years")]
+    [Authorize(Roles = UserRoles.Admin)]
     public async Task<IActionResult> FindBalanceByYears()
     {
-        var data = await _statsService.FindBalanceByYears();
+        var data = await _statsReporter.FindBalanceByYears();
 
         return Ok(data);
     }
 
     [HttpGet("first-operation-year")]
+    [Authorize(Roles = UserRoles.Admin)]
     public IActionResult FindFirstOperationYear()
     {
-        var year = _statsService.FindFirstOperationYear();
+        var year = _statsReporter.FindFirstOperationYear();
+
         return Ok(new
         {
             Year = year

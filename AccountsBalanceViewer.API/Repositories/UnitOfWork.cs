@@ -16,8 +16,7 @@ public class UnitOfWork : IUnitOfWork
     private AccountRepository? _accountRepository;
     private EntryRepository? _entryRepository;
     private UserRepository? _userRepository;
-    private StatsRepository? _statsRepository;
-    
+
     public UnitOfWork(AppDbContext context)
     {
         _context = context;

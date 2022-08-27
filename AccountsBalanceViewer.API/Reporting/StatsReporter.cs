@@ -1,10 +1,8 @@
-using System.Linq.Expressions;
 using AccountsViewer.API.Models.Contexts;
-using AccountsViewer.API.Models.DTOs;
-using AccountsViewer.API.Models.Entities;
+using AccountsViewer.API.Reporting.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace AccountsViewer.API.Repositories;
+namespace AccountsViewer.API.Reporting;
 
 public interface IStatsRepository
 {
@@ -15,11 +13,11 @@ public interface IStatsRepository
     object FindFirstOperationYear();
 }
 
-public class StatsRepository : IStatsRepository
+public class StatsReporter : IStatsReporter
 {
     private readonly AppDbContext _context;
 
-    public StatsRepository(AppDbContext context)
+    public StatsReporter(AppDbContext context)
     {
         _context = context;
     }
@@ -78,7 +76,7 @@ public class StatsRepository : IStatsRepository
         return await data.ToListAsync();
     }
 
-    public async Task<object> FindBalanceByMonths(int year)
+    public Task<object> FindBalanceByMonths(int year)
     {
         var openingBalancesMap = new Dictionary<long, float>();
         var accountNamesMap = new Dictionary<long, string>();
@@ -155,18 +153,19 @@ public class StatsRepository : IStatsRepository
             }
         }
 
-        return balancesMap.Select(pair =>
-            new
-            {
-                AccountId = pair.Key,
-                AccountName = accountNamesMap[pair.Key],
-                Data = pair.Value.Select((f, i) =>
-                    new
-                    {
-                        Month = i + 1,
-                        Balance = f
-                    })
-            });
+        return Task.FromResult<object>(Task.FromResult(
+            balancesMap.Select(pair =>
+                new
+                {
+                    AccountId = pair.Key,
+                    AccountName = accountNamesMap[pair.Key],
+                    Data = pair.Value.Select((f, i) =>
+                        new
+                        {
+                            Month = i + 1,
+                            Balance = f
+                        })
+                })));
     }
 
     public async Task<object> FindBalanceByYears()
@@ -243,7 +242,7 @@ public class StatsRepository : IStatsRepository
             });
     }
 
-    public object FindFirstOperationYear()
+    public int FindFirstOperationYear()
     {
         return _context.Entries.Min(entry => entry.Date.Year);
     }
