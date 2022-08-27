@@ -19,7 +19,6 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseNpgsql(builder.Configuration.GetConnectionString("AccountsDB")));
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -54,6 +53,7 @@ void ConfigureServices(IServiceCollection services)
     services.AddScoped<IAuthService, AuthService>();
     services.AddScoped<IAccountService, AccountService>();
     services.AddScoped<IEntryService, EntryService>();
+    services.AddScoped<IStatsService, StatsService>();
     services.AddScoped<ICryptoService, CryptoService>();
     services.AddScoped<IUnitOfWork, UnitOfWork>();
 }

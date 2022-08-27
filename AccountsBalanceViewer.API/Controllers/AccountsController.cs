@@ -24,8 +24,8 @@ public class AccountsController : ControllerBase
     public async Task<ActionResult<List<AccountDTO>>> GetAccounts(
         [FromQuery] DateTime? balanceFrom, [FromQuery] DateTime? balanceTo)
     {
-        DateOnly from = DateOnly.FromDateTime(balanceFrom ?? DateTime.MinValue);
-        DateOnly to = DateOnly.FromDateTime(balanceTo ?? DateTime.Now);
+        var from = DateOnly.FromDateTime(balanceFrom ?? DateTime.MinValue);
+        var to = DateOnly.FromDateTime(balanceTo ?? DateTime.Now);
 
         var accounts = await _accountService.GetAccountsWithBalancesWithinRange(from, to);
 
