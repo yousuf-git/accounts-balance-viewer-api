@@ -7,6 +7,7 @@ public interface IUnitOfWork
     AccountRepository AccountRepository { get; }
     EntryRepository EntryRepository { get; }
     UserRepository UserRepository { get; }
+    StatsRepository StatsRepository { get; }
     Task Commit();
 }
 public class UnitOfWork : IUnitOfWork
@@ -15,6 +16,7 @@ public class UnitOfWork : IUnitOfWork
     private AccountRepository? _accountRepository;
     private EntryRepository? _entryRepository;
     private UserRepository? _userRepository;
+    private StatsRepository? _statsRepository;
     
     public UnitOfWork(AppDbContext context)
     {
@@ -37,6 +39,12 @@ public class UnitOfWork : IUnitOfWork
     {
         get => _userRepository ??= new UserRepository(_context);
         private set => _userRepository = value;
+    }
+    
+    public StatsRepository StatsRepository
+    {
+        get => _statsRepository ??= new StatsRepository(_context);
+        private set => _statsRepository = value;
     }
 
     public async Task Commit()
