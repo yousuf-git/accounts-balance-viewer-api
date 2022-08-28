@@ -4,8 +4,9 @@ using AccountsBalanceViewer.UnitTests.Fixtures;
 using AccountsViewer.API.Config;
 using AccountsViewer.API.Models.DTOs;
 using AccountsViewer.API.Models.Entities;
-using AccountsViewer.API.Repositories;
+using AccountsViewer.API.Repositories.Interfaces;
 using AccountsViewer.API.Services;
+using AccountsViewer.API.Services.Interfaces;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -18,7 +19,7 @@ public class TestAuthService
     [Fact]
     public void Auth_OnSuccess_ReturnsAuthData()
     {
-        var mockUserRepo = new Mock<UserRepository>(null);
+        var mockUserRepo = new Mock<IUserRepository>();
         mockUserRepo
             .Setup(repository => repository.Search(It.IsAny<Expression<Func<User, bool>>>()))
             .Returns(UsersFixture.GetTestUsers());
@@ -56,7 +57,7 @@ public class TestAuthService
     [Fact]
     public void Auth_OnUserNotFound_ReturnsEmptyValues()
     {
-        var mockUserRepo = new Mock<UserRepository>(null);
+        var mockUserRepo = new Mock<IUserRepository>();
         mockUserRepo
             .Setup(repository => repository.Search(It.IsAny<Expression<Func<User, bool>>>()))
             .Returns(new List<User>());
@@ -94,7 +95,7 @@ public class TestAuthService
     [Fact]
     public void Auth_WhenPasswordIsInvalid_ReturnsEmptyValues()
     {
-        var mockUserRepo = new Mock<UserRepository>(null);
+        var mockUserRepo = new Mock<IUserRepository>();
         mockUserRepo
             .Setup(repository => repository.Search(It.IsAny<Expression<Func<User, bool>>>()))
             .Returns(UsersFixture.GetTestUsers());
@@ -132,7 +133,7 @@ public class TestAuthService
     [Fact]
     public void Auth_WhenJwtKeyIsLessThan128Bits_ThrowsArgumentOutOfRangeException()
     {
-        var mockUserRepo = new Mock<UserRepository>(null);
+        var mockUserRepo = new Mock<IUserRepository>();
         mockUserRepo
             .Setup(repository => repository.Search(It.IsAny<Expression<Func<User, bool>>>()))
             .Returns(UsersFixture.GetTestUsers());
@@ -168,7 +169,7 @@ public class TestAuthService
     [Fact]
     public void Auth_WhenCalled_InvokesCryptoServiceExactlyOnce()
     {
-        var mockUserRepo = new Mock<UserRepository>(null);
+        var mockUserRepo = new Mock<IUserRepository>();
         mockUserRepo
             .Setup(repository => repository.Search(It.IsAny<Expression<Func<User, bool>>>()))
             .Returns(UsersFixture.GetTestUsers());
@@ -208,10 +209,10 @@ public class TestAuthService
     {
         var user = UsersFixture.GetTestUser();
 
-        var mockUserRepo = new Mock<UserRepository>(null);
+        var mockUserRepo = new Mock<IUserRepository>();
         mockUserRepo
             .Setup(repository => repository.Add(It.IsAny<User>()))
-            .Callback<User>(user => user.Id = 1);
+            .Callback<User>(u => u.Id = 1);
 
         var mockUow = new Mock<IUnitOfWork>();
         mockUow
@@ -247,10 +248,10 @@ public class TestAuthService
         var user = UsersFixture.GetTestUser();
         var rawPassword = user.Password;
 
-        var mockUserRepo = new Mock<UserRepository>(null);
+        var mockUserRepo = new Mock<IUserRepository>();
         mockUserRepo
             .Setup(repository => repository.Add(It.IsAny<User>()))
-            .Callback<User>(user => user.Id = 1);
+            .Callback<User>(u => u.Id = 1);
 
         var mockUow = new Mock<IUnitOfWork>();
         mockUow
@@ -285,10 +286,10 @@ public class TestAuthService
     {
         var user = UsersFixture.GetTestUser();
 
-        var mockUserRepo = new Mock<UserRepository>(null);
+        var mockUserRepo = new Mock<IUserRepository>();
         mockUserRepo
             .Setup(repository => repository.Add(It.IsAny<User>()))
-            .Callback<User>(user => user.Id = 1);
+            .Callback<User>(u => u.Id = 1);
 
         var mockUow = new Mock<IUnitOfWork>();
         mockUow
@@ -321,7 +322,7 @@ public class TestAuthService
     [Fact]
     public void GetAuthUser_OnAuthenticated_ReturnsAuthUser()
     {
-        var mockUserRepo = new Mock<UserRepository>(null);
+        var mockUserRepo = new Mock<IUserRepository>();
 
         var mockUow = new Mock<IUnitOfWork>();
         mockUow
@@ -359,7 +360,7 @@ public class TestAuthService
     [Fact]
     public void GetAuthUser_OnUnauthenticated_ReturnsNull()
     {
-        var mockUserRepo = new Mock<UserRepository>(null);
+        var mockUserRepo = new Mock<IUserRepository>();
 
         var mockUow = new Mock<IUnitOfWork>();
         mockUow

@@ -7,5 +7,5 @@ public class JwtConfig
     public string Key { get; set; } = "";
     public string Issuer { get; set; } = "";
     public string Audience { get; set; } = "";
-    public int ExpireIn { get; set; } // minutes
+    public float ExpireIn { get; set; } // minutes
 }

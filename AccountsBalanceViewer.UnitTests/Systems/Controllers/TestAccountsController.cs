@@ -1,11 +1,9 @@
 using AccountsBalanceViewer.UnitTests.Fixtures;
 using AccountsViewer.API.Controllers;
 using AccountsViewer.API.Models.DTOs;
-using AccountsViewer.API.Services;
-using Castle.Core.Configuration;
+using AccountsViewer.API.Services.Interfaces;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Moq;
 
 namespace AccountsBalanceViewer.UnitTests.Systems.Controllers;
@@ -20,7 +18,7 @@ public class TestAccountsController
             .Setup(service =>
                 service.GetAccountsWithBalancesWithinRange(It.IsAny<DateOnly>(), It.IsAny<DateOnly>()))
             .ReturnsAsync(AccountsFixture.GetTestAccountDTOs());
-        
+
         var sut = new AccountsController(mockAccountService.Object);
 
         var result = (await sut.GetAccounts(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Result as OkObjectResult;
@@ -36,7 +34,7 @@ public class TestAccountsController
             .Setup(service =>
                 service.GetAccountsWithBalancesWithinRange(It.IsAny<DateOnly>(), It.IsAny<DateOnly>()))
             .ReturnsAsync(AccountsFixture.GetTestAccountDTOs());
-        
+
         var sut = new AccountsController(mockAccountService.Object);
 
         var result = (await sut.GetAccounts(It.IsAny<DateTime>(), It.IsAny<DateTime>())).Result;
@@ -54,7 +52,7 @@ public class TestAccountsController
             .Setup(service =>
                 service.GetAccountsWithBalancesWithinRange(It.IsAny<DateOnly>(), It.IsAny<DateOnly>()))
             .ReturnsAsync(AccountsFixture.GetTestAccountDTOs());
-        
+
         var sut = new AccountsController(mockAccountService.Object);
 
         var result = await sut.GetAccounts(It.IsAny<DateTime>(), It.IsAny<DateTime>());
@@ -72,7 +70,7 @@ public class TestAccountsController
             .Setup(service =>
                 service.GetAccountsWithBalancesWithinRange(It.IsAny<DateOnly>(), It.IsAny<DateOnly>()))
             .ReturnsAsync(AccountsFixture.GetTestAccountDTOs());
-        
+
         var sut = new AccountsController(mockAccountService.Object);
 
         var balanceFrom = DateTime.Now;

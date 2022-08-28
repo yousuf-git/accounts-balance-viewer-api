@@ -1,43 +1,36 @@
 using AccountsViewer.API.Models.Contexts;
+using AccountsViewer.API.Repositories.Interfaces;
 
 namespace AccountsViewer.API.Repositories;
 
-public interface IUnitOfWork
-{
-    AccountRepository AccountRepository { get; }
-    EntryRepository EntryRepository { get; }
-    UserRepository UserRepository { get; }
-    Task Commit();
-}
 public class UnitOfWork : IUnitOfWork
 {
     private readonly AppDbContext _context;
-    private AccountRepository? _accountRepository;
-    private EntryRepository? _entryRepository;
-    private UserRepository? _userRepository;
-    
-    public UnitOfWork(AppDbContext context)
+    private readonly IServiceProvider _provider;
+
+    private IAccountRepository? _accountRepository;
+    private IEntryRepository? _entryRepository;
+    private IUserRepository? _userRepository;
+
+    public UnitOfWork(AppDbContext context, IServiceProvider provider)
     {
         _context = context;
-    }
-    
-    public AccountRepository AccountRepository
-    {
-        get => _accountRepository ??= new AccountRepository(_context);
-        private set => _accountRepository = value;
-    }  
-    
-    public EntryRepository EntryRepository
-    {
-        get => _entryRepository ??= new EntryRepository(_context);
-        private set => _entryRepository = value;
+        _provider = provider;
     }
 
-    public UserRepository UserRepository
+    private T InitService<T>(ref T member)
     {
-        get => _userRepository ??= new UserRepository(_context);
-        private set => _userRepository = value;
+        if (member == null)
+        {
+            member = _provider.GetService<T>()!;
+        }
+
+        return member;
     }
+
+    public IAccountRepository AccountRepository => InitService(ref _accountRepository)!;
+    public IEntryRepository EntryRepository => InitService(ref _entryRepository)!;
+    public IUserRepository UserRepository => InitService(ref _userRepository)!;
 
     public async Task Commit()
     {

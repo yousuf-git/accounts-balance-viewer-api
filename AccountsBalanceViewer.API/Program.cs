@@ -1,8 +1,12 @@
 using System.Text;
 using AccountsViewer.API.Config;
 using AccountsViewer.API.Models.Contexts;
+using AccountsViewer.API.Reporting;
+using AccountsViewer.API.Reporting.Interfaces;
 using AccountsViewer.API.Repositories;
+using AccountsViewer.API.Repositories.Interfaces;
 using AccountsViewer.API.Services;
+using AccountsViewer.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -19,7 +23,6 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseNpgsql(builder.Configuration.GetConnectionString("AccountsDB")));
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -56,6 +59,10 @@ void ConfigureServices(IServiceCollection services)
     services.AddScoped<IEntryService, EntryService>();
     services.AddScoped<ICryptoService, CryptoService>();
     services.AddScoped<IUnitOfWork, UnitOfWork>();
+    services.AddScoped<IStatsReporter, StatsReporter>();
+    services.AddScoped<IUserRepository, UserRepository>();
+    services.AddScoped<IAccountRepository, AccountRepository>();
+    services.AddScoped<IEntryRepository, EntryRepository>();
 }
 
 void ConfigureConfigs(IServiceCollection services)

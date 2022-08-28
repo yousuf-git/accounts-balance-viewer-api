@@ -2,7 +2,7 @@ using AccountsBalanceViewer.UnitTests.Fixtures;
 using AccountsViewer.API.Controllers;
 using AccountsViewer.API.Models.Entities;
 using AccountsViewer.API.Models.Requests;
-using AccountsViewer.API.Services;
+using AccountsViewer.API.Services.Interfaces;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -45,7 +45,7 @@ public class TestEntriesController
     public async Task AddEntries_WhenCalledWithValidRequest_InvokesEntryServiceExactlyOnce()
     {
         var request = EntriesFixture.GetTestAddEntryRequest();
-        
+
         var mockEntryService = new Mock<IEntryService>();
         mockEntryService
             .Setup(service => service.AddEntries(It.IsAny<IEnumerable<Entry>>()));
@@ -58,7 +58,8 @@ public class TestEntriesController
             Times.Once);
     }
 
-    [Fact] public async Task AddEntries_WhenCalledWithEmptyRequest_DoesntInvokeEntryService()
+    [Fact]
+    public async Task AddEntries_WhenCalledWithEmptyRequest_DoesntInvokeEntryService()
     {
         var mockEntryService = new Mock<IEntryService>();
         mockEntryService

@@ -4,7 +4,7 @@ using AccountsViewer.API.Models.DTOs;
 using AccountsViewer.API.Models.Entities;
 using AccountsViewer.API.Models.Requests;
 using AccountsViewer.API.Models.Responses;
-using AccountsViewer.API.Services;
+using AccountsViewer.API.Services.Interfaces;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

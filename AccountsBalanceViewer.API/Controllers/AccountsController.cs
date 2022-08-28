@@ -1,8 +1,9 @@
+using AccountsViewer.API.Models.Constants;
 using AccountsViewer.API.Models.DTOs;
 using AccountsViewer.API.Models.Entities;
 using AccountsViewer.API.Models.Requests;
 using AccountsViewer.API.Models.Responses;
-using AccountsViewer.API.Services;
+using AccountsViewer.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,8 +25,8 @@ public class AccountsController : ControllerBase
     public async Task<ActionResult<List<AccountDTO>>> GetAccounts(
         [FromQuery] DateTime? balanceFrom, [FromQuery] DateTime? balanceTo)
     {
-        DateOnly from = DateOnly.FromDateTime(balanceFrom ?? DateTime.MinValue);
-        DateOnly to = DateOnly.FromDateTime(balanceTo ?? DateTime.Now);
+        var from = DateOnly.FromDateTime(balanceFrom ?? DateTime.MinValue);
+        var to = DateOnly.FromDateTime(balanceTo ?? DateTime.Now);
 
         var accounts = await _accountService.GetAccountsWithBalancesWithinRange(from, to);
 
