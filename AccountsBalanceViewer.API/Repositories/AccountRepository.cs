@@ -31,11 +31,9 @@ public class AccountRepository : IAccountRepository
         return await _context.Accounts.ToListAsync();
     }
 
-    public async Task<IEnumerable<AccountDTO>> FindAllWithBalancesWithinRange(DateOnly balanceFrom,
-        DateOnly balanceTo)
+    public async Task<IEnumerable<AccountDTO>> FindAllWithBalancesWithinRange(DateOnly balanceFrom, DateOnly balanceTo)
     {
-        return Task.FromResult<IEnumerable<AccountDTO>>(_context.Accounts
-            .Select(account => new AccountDTO
+        return await _context.Accounts.Select(account => new AccountDTO
             {
                 Id = account.Id,
                 Name = account.Name,
@@ -44,7 +42,8 @@ public class AccountRepository : IAccountRepository
                         DateOnly.FromDateTime(entry.Date) >= balanceFrom &&
                         DateOnly.FromDateTime(entry.Date) <= balanceTo)
                     .Sum(entry => entry.Amount)
-            }));
+            })
+            .ToListAsync();
     }
 
     public IEnumerable<Account> Search(Expression<Func<Account, bool>> predicate)
