@@ -1,6 +1,5 @@
 using AccountsBalanceViewer.UnitTests.Fixtures;
 using AccountsViewer.API.Models.Entities;
-using AccountsViewer.API.Repositories;
 using AccountsViewer.API.Repositories.Interfaces;
 using AccountsViewer.API.Services;
 using AccountsViewer.API.Services.Interfaces;
@@ -17,7 +16,7 @@ public class TestEntryService
         var mockAuthService = new Mock<IAuthService>();
         mockAuthService.Setup(service => service.GetAuthUser());
 
-        var mockEntryRepo = new Mock<EntryRepository>(null);
+        var mockEntryRepo = new Mock<IEntryRepository>();
         mockEntryRepo.Setup(repository => repository.AddRange(It.IsAny<IEnumerable<Entry>>()));
 
         var mockUow = new Mock<IUnitOfWork>();
@@ -40,7 +39,7 @@ public class TestEntryService
             .Setup(service => service.GetAuthUser())
             .Returns(UsersFixture.GetTestUserDTO());
 
-        var mockEntryRepo = new Mock<EntryRepository>(null);
+        var mockEntryRepo = new Mock<IEntryRepository>();
         mockEntryRepo.Setup(repository => repository.AddRange(It.IsAny<IEnumerable<Entry>>()));
 
         var mockUow = new Mock<IUnitOfWork>();
@@ -63,7 +62,7 @@ public class TestEntryService
             .Setup(service => service.GetAuthUser())
             .Returns(UsersFixture.GetTestUserDTO());
 
-        var mockEntryRepo = new Mock<EntryRepository>(null);
+        var mockEntryRepo = new Mock<IEntryRepository>();
         mockEntryRepo.Setup(repository => repository.AddRange(It.IsAny<IEnumerable<Entry>>()));
 
         var mockUow = new Mock<IUnitOfWork>();
@@ -88,7 +87,7 @@ public class TestEntryService
             .Setup(service => service.GetAuthUser())
             .Returns(UsersFixture.GetTestUserDTO());
 
-        var mockEntryRepo = new Mock<EntryRepository>(null);
+        var mockEntryRepo = new Mock<IEntryRepository>();
         mockEntryRepo.Setup(repository => repository.AddRange(It.IsAny<IEnumerable<Entry>>()));
 
         var mockUow = new Mock<IUnitOfWork>();

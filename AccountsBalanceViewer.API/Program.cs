@@ -60,6 +60,9 @@ void ConfigureServices(IServiceCollection services)
     services.AddScoped<ICryptoService, CryptoService>();
     services.AddScoped<IUnitOfWork, UnitOfWork>();
     services.AddScoped<IStatsReporter, StatsReporter>();
+    services.AddScoped<IUserRepository, UserRepository>();
+    services.AddScoped<IAccountRepository, AccountRepository>();
+    services.AddScoped<IEntryRepository, EntryRepository>();
 }
 
 void ConfigureConfigs(IServiceCollection services)

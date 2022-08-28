@@ -2,8 +2,8 @@ namespace AccountsViewer.API.Repositories.Interfaces;
 
 public interface IUnitOfWork
 {
-    AccountRepository AccountRepository { get; }
-    EntryRepository EntryRepository { get; }
-    UserRepository UserRepository { get; }
+    IAccountRepository AccountRepository { get; }
+    IEntryRepository EntryRepository { get; }
+    IUserRepository UserRepository { get; }
     Task Commit();
 }

@@ -1,6 +1,5 @@
 using AccountsBalanceViewer.UnitTests.Fixtures;
 using AccountsViewer.API.Models.Entities;
-using AccountsViewer.API.Repositories;
 using AccountsViewer.API.Repositories.Interfaces;
 using AccountsViewer.API.Services;
 using FluentAssertions;
@@ -15,7 +14,7 @@ public class TestAccountService
     {
         var account = new Account { Name = "R&D" };
 
-        var mockAccountRepo = new Mock<AccountRepository>(null);
+        var mockAccountRepo = new Mock<IAccountRepository>();
         mockAccountRepo
             .Setup(repo => repo.Add(It.IsAny<Account>()))
             .Callback<Account>(a => a.Id = 1);
@@ -37,7 +36,7 @@ public class TestAccountService
     {
         var account = new Account { Name = "R&D" };
 
-        var mockAccountRepo = new Mock<AccountRepository>(null);
+        var mockAccountRepo = new Mock<IAccountRepository>();
         mockAccountRepo
             .Setup(repo => repo.Add(It.IsAny<Account>()));
 
@@ -58,7 +57,7 @@ public class TestAccountService
     {
         var accounts = AccountsFixture.GetTestAccountDTOs();
 
-        var mockAccountRepo = new Mock<AccountRepository>(null);
+        var mockAccountRepo = new Mock<IAccountRepository>();
         mockAccountRepo
             .Setup(repo =>
                 repo.FindAllWithBalancesWithinRange(It.IsAny<DateOnly>(), It.IsAny<DateOnly>()))
@@ -81,7 +80,7 @@ public class TestAccountService
     {
         var account = new Account { Name = "R&D" };
 
-        var mockAccountRepo = new Mock<AccountRepository>(null);
+        var mockAccountRepo = new Mock<IAccountRepository>();
         mockAccountRepo
             .Setup(repo =>
                 repo.Find(It.IsAny<long>()))
@@ -104,7 +103,7 @@ public class TestAccountService
     {
         var account = new Account { Id = 100, Name = "R&D" };
 
-        var mockAccountRepo = new Mock<AccountRepository>(null);
+        var mockAccountRepo = new Mock<IAccountRepository>();
         mockAccountRepo
             .Setup(repository =>
                 repository.Find(It.IsAny<long>()))
@@ -125,7 +124,7 @@ public class TestAccountService
     [Fact]
     public async Task DeleteAccount_WhenAccountDoesntExist_ThrowsException()
     {
-        var mockAccountRepo = new Mock<AccountRepository>(null);
+        var mockAccountRepo = new Mock<IAccountRepository>();
         mockAccountRepo
             .Setup(repository =>
                 repository.Find(It.IsAny<long>()))
