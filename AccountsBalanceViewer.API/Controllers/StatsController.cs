@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using AccountsViewer.API.Models.Constants;
+using AccountsViewer.API.Models.DTOs;
 using AccountsViewer.API.Reporting.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,31 +20,34 @@ public class StatsController : ControllerBase
 
     [HttpGet("balance-change-by-months")]
     [Authorize(Roles = UserRoles.Admin)]
-    public async Task<IActionResult> FindBalanceChangeByMonths([Required] int year)
+    public async Task<ActionResult<List<BalanceChangeByMonthsDTO>>> FindBalanceChangeByMonths([Required] int year)
     {
         var data = await _statsReporter.FindBalanceChangeByMonths(year);
+
         return Ok(data);
     }
 
     [HttpGet("balance-change-by-years")]
     [Authorize(Roles = UserRoles.Admin)]
-    public async Task<IActionResult> FindBalanceChangeByYears()
+    public async Task<ActionResult<BalanceChangeByYearsDTO>> FindBalanceChangeByYears()
     {
         var data = await _statsReporter.FindBalanceChangeByYears();
+
         return Ok(data);
     }
 
     [HttpGet("balance-by-months")]
     [Authorize(Roles = UserRoles.Admin)]
-    public async Task<IActionResult> FindBalanceByMonths([Required] int year)
+    public async Task<ActionResult<BalanceByMonthsDTO>> FindBalanceByMonths([Required] int year)
     {
         var data = await _statsReporter.FindBalanceByMonths(year);
+
         return Ok(data);
     }
 
     [HttpGet("balance-by-years")]
     [Authorize(Roles = UserRoles.Admin)]
-    public async Task<IActionResult> FindBalanceByYears()
+    public async Task<ActionResult<BalanceByYearsDTO>> FindBalanceByYears()
     {
         var data = await _statsReporter.FindBalanceByYears();
 

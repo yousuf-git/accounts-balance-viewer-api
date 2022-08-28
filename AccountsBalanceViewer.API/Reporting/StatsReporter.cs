@@ -1,17 +1,9 @@
 using AccountsViewer.API.Models.Contexts;
+using AccountsViewer.API.Models.DTOs;
 using AccountsViewer.API.Reporting.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace AccountsViewer.API.Reporting;
-
-public interface IStatsRepository
-{
-    Task<object> FindBalanceChangeByMonths(int year);
-    Task<object> FindBalanceChangeByYears();
-    Task<object> FindBalanceByMonths(int year);
-    Task<object> FindBalanceByYears();
-    object FindFirstOperationYear();
-}
 
 public class StatsReporter : IStatsReporter
 {
@@ -22,7 +14,7 @@ public class StatsReporter : IStatsReporter
         _context = context;
     }
 
-    public async Task<object> FindBalanceChangeByMonths(int year)
+    public async Task<List<BalanceChangeByMonthsDTO>> FindBalanceChangeByMonths(int year)
     {
         var data = from entry in _context.Entries
             join account in _context.Accounts on entry.AccountId equals account.Id
@@ -33,23 +25,25 @@ public class StatsReporter : IStatsReporter
                 AccountName = account.Name,
             }
             into g
-            select new
+            select new BalanceChangeByMonthsDTO
             {
                 AccountId = g.Key.AccountId,
                 AccountName = g.Key.AccountName,
                 Data = g.Select(entry => new { entry.Date.Month, entry.Amount })
                     .OrderBy(arg => arg.Month)
-                    .GroupBy(arg => arg.Month).Select(grouping => new
-                    {
-                        Month = grouping.Key,
-                        Change = grouping.Sum(arg => arg.Amount)
-                    })
+                    .GroupBy(arg => arg.Month).Select(grouping =>
+                        new BalanceChangeByMonthsDTO.BalanceChangeByMonthsStat()
+                        {
+                            Month = grouping.Key,
+                            Change = grouping.Sum(arg => arg.Amount)
+                        })
+                    .ToList()
             };
 
         return await data.ToListAsync();
     }
 
-    public async Task<object> FindBalanceChangeByYears()
+    public async Task<List<BalanceChangeByYearsDTO>> FindBalanceChangeByYears()
     {
         var data = from entry in _context.Entries
             join account in _context.Accounts on entry.AccountId equals account.Id
@@ -59,24 +53,25 @@ public class StatsReporter : IStatsReporter
                 AccountName = account.Name,
             }
             into g
-            select new
+            select new BalanceChangeByYearsDTO
             {
                 AccountId = g.Key.AccountId,
                 AccountName = g.Key.AccountName,
                 Data = g.Select(entry => new { entry.Date.Year, entry.Amount })
                     .OrderBy(arg => arg.Year)
                     .GroupBy(arg => arg.Year)
-                    .Select(grouping => new
+                    .Select(grouping => new BalanceChangeByYearsDTO.BalanceChangeByYearsStat()
                     {
                         Year = grouping.Key,
                         Change = grouping.Sum(arg => arg.Amount)
                     })
+                    .ToList()
             };
 
         return await data.ToListAsync();
     }
 
-    public Task<object> FindBalanceByMonths(int year)
+    public Task<List<BalanceByMonthsDTO>> FindBalanceByMonths(int year)
     {
         var openingBalancesMap = new Dictionary<long, float>();
         var accountNamesMap = new Dictionary<long, string>();
@@ -153,22 +148,25 @@ public class StatsReporter : IStatsReporter
             }
         }
 
-        return Task.FromResult<object>(Task.FromResult(
+        var data =
             balancesMap.Select(pair =>
-                new
+                new BalanceByMonthsDTO
                 {
                     AccountId = pair.Key,
                     AccountName = accountNamesMap[pair.Key],
                     Data = pair.Value.Select((f, i) =>
-                        new
-                        {
-                            Month = i + 1,
-                            Balance = f
-                        })
-                })));
+                            new BalanceByMonthsDTO.BalanceByMonthsStat
+                            {
+                                Month = i + 1,
+                                Balance = f
+                            })
+                        .ToList()
+                });
+
+        return Task.FromResult(data.ToList());
     }
 
-    public async Task<object> FindBalanceByYears()
+    public async Task<List<BalanceByYearsDTO>> FindBalanceByYears()
     {
         var rangeQuery = from entry in _context.Entries
             group entry by true
@@ -228,18 +226,20 @@ public class StatsReporter : IStatsReporter
             }
         }
 
-        return balancesMap.Select(pair =>
-            new
+        var data = balancesMap.Select(pair =>
+            new BalanceByYearsDTO
             {
                 AccountId = pair.Key,
                 AccountName = accountNamesMap[pair.Key],
-                Data = pair.Value.Select((f, i) =>
-                    new
+                Data = pair.Value.Select((f, i) => new BalanceByYearsDTO.BalanceByYearsStat
                     {
                         Year = range.Min + i,
                         Balance = f
                     })
+                    .ToList()
             });
+
+        return data.ToList();
     }
 
     public int FindFirstOperationYear()
